@@ -15,7 +15,7 @@
 
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body text-center p-4">
-                    {{-- User Image --}}
+                   {{-- User Image --}}
                     <div class="mb-4">
                         @if(Auth::user()->image)
                             <img src="{{ asset('storage/' . Auth::user()->image) }}"

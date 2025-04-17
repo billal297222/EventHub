@@ -14,7 +14,7 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
-        return view('events.index', compact('events')); // events/index.blade.php
+        return view('events.index', compact('events'));
     }
 
     /**
@@ -23,7 +23,7 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.show', compact('event')); // events/show.blade.php
+        return view('events.show', compact('event'));
     }
 
     /**
@@ -31,7 +31,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events.create'); // events/create.blade.php
+        return view('events.create');
     }
 
     /**
@@ -70,7 +70,7 @@ class EventController extends Controller
         $event->start_time  = $request->start_time;
         $event->end_time    = $request->end_time;
         $event->user_id     = auth()->user()->id;
-        $event->image       = $imagePath; // store image path
+        $event->image       = $imagePath;
         $event->save();
 
         return redirect()->route('events.index')
@@ -83,7 +83,7 @@ class EventController extends Controller
     public function order($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.order', compact('event')); // events/order.blade.php
+        return view('events.order', compact('event'));
     }
 
     /**
@@ -96,24 +96,35 @@ class EventController extends Controller
             'email' => 'required|email|max:255',
         ]);
 
-        // Ensure the event exists before creating the order
+        // Ensure the event exists
         $event = Event::findOrFail($id);
 
-        // Create the order record
+        // Create order
         Order::create([
             'name'     => $request->name,
             'email'    => $request->email,
-            'event_id' => $event->id,  // Explicitly using $event->id to make sure it's correctly set
+            'event_id' => $event->id,
         ]);
 
-        // Redirect to the payment confirmation page with the order id
         return redirect()->route('events.paymentConfirmation', ['id' => $id])
                          ->with('success', 'Your order has been placed! Now choose your payment option.');
     }
 
+    /**
+     * Show payment confirmation page for an event.
+     */
     public function paymentConfirmation($id)
     {
         $event = Event::findOrFail($id);
         return view('events.payment_confirmation', compact('event'));
+    }
+
+    /**
+     * Display events created by the authenticated user.
+     */
+    public function dashboard()
+    {
+        $events = Event::where('user_id', auth()->id())->get();
+        return view('dashboard', compact('events'));
     }
 }
