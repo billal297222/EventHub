@@ -127,4 +127,57 @@ class EventController extends Controller
         $events = Event::where('user_id', auth()->id())->get();
         return view('dashboard', compact('events'));
     }
+
+    /**
+     * Show the form to edit an event.
+     */
+    public function edit($id)
+    {
+        $event = Event::findOrFail($id);
+
+        // Optional: prevent editing others' events
+        if ($event->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        return view('events.edit', compact('event'));
+    }
+
+    /**
+     * Handle event update.
+     */
+    public function update(Request $request, $id)
+    {
+        $event = Event::findOrFail($id);
+
+        if ($event->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'event_date'  => 'nullable|date',
+            'price'       => 'nullable|numeric',
+            'location'    => 'nullable|string|max:255',
+            'start_date'  => 'nullable|date|before_or_equal:end_date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
+            'start_time'  => 'nullable|date_format:H:i',
+            'end_time'    => 'nullable|date_format:H:i|after_or_equal:start_time',
+        ]);
+
+        // Update image if provided
+        if ($request->hasFile('image')) {
+            $event->image = $request->file('image')->store('images', 'public');
+        }
+
+        // Update event details
+        $event->update($request->only([
+            'title', 'description', 'event_date', 'price',
+            'location', 'start_date', 'end_date', 'start_time', 'end_time'
+        ]));
+
+        return redirect()->route('dashboard')->with('success', 'Event updated successfully.');
+    }
 }

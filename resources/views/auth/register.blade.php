@@ -1,7 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh; position: relative;">
+
+    <!-- Back Button -->
+    <a href="{{ url('/') }}" class="btn btn-outline-secondary position-absolute" style="top: 20px; left: 20px; z-index: 10;">
+        ← Back to Home
+    </a>
+
     <div class="card shadow-lg p-5 border-0" style="max-width: 550px; width: 100%; border-radius: 20px; background-color: #fdfdfd;">
         <h2 class="text-center mb-4" style="font-weight: 700; color: #2c3e50;">Create Your Account</h2>
         <p class="text-center mb-4" style="color: #7f8c8d;">Join us and explore premium events</p>
@@ -59,7 +65,7 @@
             <div class="d-grid mb-3">
                 <button type="submit"
                         class="btn"
-                        style="background: linear-gradient(135deg, #f39c12, #d35400); color: white; font-weight: bold; font-size: 1.1rem; border-radius: 30px; padding: 12px;">
+                        style="background: linear-gradient(135deg, #307c78, #0e1026); color: white; font-weight: bold; font-size: 1.1rem; border-radius: 30px; padding: 12px;">
                     Register
                 </button>
             </div>

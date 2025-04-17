@@ -20,6 +20,8 @@ class Event extends Model
         'end_date',
         'start_time',
         'end_time',
+        'total_seats',
+        'seats'
     ];
 
     // Relationship to User model

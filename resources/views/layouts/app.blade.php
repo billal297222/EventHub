@@ -54,6 +54,8 @@
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -123,7 +125,7 @@
 
     {{-- Footer --}}
     <footer>
-        <p class="mb-0">&copy; {{ date('Y') }} EventSys. All Rights Reserved.</p>
+        <p class="mb-0">&copy; {{ date('Y') }} EventHub. All Rights Reserved.</p>
     </footer>
 
     {{-- Bootstrap JS --}}
